@@ -26,26 +26,21 @@ const favoriteBlog = (blogs) => {
 }
 
 const mostBlogs = (blogs) => {
-  const reducer = ([bigAuthor, bigCount], [author, articles]) => {
-    console.log(`Comparing ${bigAuthor}:${bigCount} to ${author}:${articles.length}`)
-    if (bigAuthor === null || bigCount < articles.length)
-      return [author, articles.length]
-    else
-      return [bigAuthor, bigCount]
-  }
-
-  const grouped = groupBy('author')(blogs)
-  // const authorCounts = Object.entries(grouped).map(([key, value]) => {return { [key] : value.length }}).flat()
-  // console.log(authorCounts)
-  console.log(Object.entries(grouped).reduce(reducer, [null, -1])[0])
+  return Object.entries(groupBy('author')(blogs))
+    .map(([key, value]) => {return { author: key, count: value.length }})
+    .reduce((x, y) => (x.count > y.count) ? x : y, { author: null, count: null })
 }
 
-
-
+const mostLikes = (blogs) => {
+  return Object.entries(groupBy('author')(blogs))
+    .map(([key, value]) => {return { author: key, likes: value.reduce(( sum, x ) => sum + x.likes, 0) }})
+    .reduce((x, y) => (x.likes > y.likes) ? x : y, { author: null, likes: null })
+}
 
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 }
