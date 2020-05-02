@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
 const Blog = ({ blog, addLike, removeBlog, username }) => {
   const [hidden, setHidden] = useState(true)
@@ -12,32 +12,30 @@ const Blog = ({ blog, addLike, removeBlog, username }) => {
   }
 
   const like = () => {
-    console.log("Liking it")
     addLike(blog)
   }
 
   const remove = () => {
-    console.log("Removing blog")
     removeBlog(blog)
   }
 
   return (
     <div style={blogStyle}>
-      <div>
+      <div className="titleAndAuthor">
         {blog.title} {blog.author}
         <button onClick={ () => setHidden(!hidden) }>
           { hidden ? 'show' : 'hide' }
         </button>
       </div>
-      <div style={{ display: hidden ? 'none' : '' }}>
-        <div>{ blog.url }</div>
-        <div>{ blog.likes }<button onClick={like}>like</button></div>
+      <div className="details" style={{ display: hidden ? 'none' : '' }}>
+        <div className="url">{ blog.url }</div>
+        <div className="likes">{ blog.likes }<button onClick={like}>like</button></div>
         <div>{ blog.user.name }</div>
         <div style={{ display: username === blog.user.username ? '' : 'none' }}>
           <button onClick={ remove } >remove</button>
         </div>
       </div>
-  </div>
-)}
+    </div>
+  )}
 
 export default Blog

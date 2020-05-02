@@ -27,3 +27,4 @@ scratch/
 #ignore .env files which contain API keys
 .env
 node_modules/
+part5/notes/cypress/videos/

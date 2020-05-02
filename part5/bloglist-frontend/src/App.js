@@ -11,7 +11,7 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
   const [errorMessage, setErrorMessage] = useState(null)
   const [notificationMessage, setNotificationMessage] = useState(null)
-  const [username, setUsername] = useState('') 
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
@@ -28,7 +28,7 @@ const App = () => {
 
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
-      ) 
+      )
       blogService.setToken(user.token)
       setUser(user)
       setUsername('')
@@ -41,13 +41,13 @@ const App = () => {
     }
   }
 
-  const handleLogout = (event) => {
+  const handleLogout = () => {
     setUser(null)
     window.localStorage.removeItem('loggedBlogappUser')
   }
 
   const addLike = (blogObject) => {
-    const newBlog = {...blogObject, likes: blogObject.likes + 1}
+    const newBlog = { ...blogObject, likes: blogObject.likes + 1 }
     blogService.update(newBlog.id, newBlog)
       .then( returnedBlog => {
         setBlogs(blogs.map(blog => blog.id !== returnedBlog.id ? blog : returnedBlog))
@@ -66,19 +66,19 @@ const App = () => {
       .then( returnedBlog => {
         setBlogs(blogs.concat(blogObject))
         setNotificationMessage(
-					`Added ${returnedBlog.title} by  ${returnedBlog.author}`
-				)
-				setTimeout(() => {
-					setNotificationMessage(null)
-				}, 5000)
+          `Added ${returnedBlog.title} by  ${returnedBlog.author}`
+        )
+        setTimeout(() => {
+          setNotificationMessage(null)
+        }, 5000)
       })
       .catch(error => {
-				console.log(error.response.data)
-				setErrorMessage(error.response.data.error)
-				setTimeout(() => {
-					setErrorMessage(null)
-				}, 5000)
-			})
+        console.log(error.response.data)
+        setErrorMessage(error.response.data.error)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      })
   }
 
   const removeBlog = (blogObject) => {
@@ -87,17 +87,17 @@ const App = () => {
       .then(() => {
         setBlogs(blogs.filter(x => x.id !== blogObject.id))
         setNotificationMessage('blog deleted')
-				setTimeout(() => {
-					setNotificationMessage(null)
-				}, 5000)
+        setTimeout(() => {
+          setNotificationMessage(null)
+        }, 5000)
       })
       .catch(error => {
-				console.log(error.response.data)
-				setErrorMessage(error.response.data.error)
-				setTimeout(() => {
-					setErrorMessage(null)
-				}, 5000)
-			})
+        console.log(error.response.data)
+        setErrorMessage(error.response.data.error)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      })
   }
 
   const blogForm = () => (
@@ -110,7 +110,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -126,7 +126,7 @@ const App = () => {
     <form onSubmit={handleLogin}>
       <div>
         username
-          <input
+        <input
           type="text"
           value={username}
           name="Username"
@@ -135,7 +135,7 @@ const App = () => {
       </div>
       <div>
         password
-          <input
+        <input
           type="password"
           value={password}
           name="Password"
@@ -143,7 +143,7 @@ const App = () => {
         />
       </div>
       <button type="submit">login</button>
-    </form>      
+    </form>
   )
 
   return (
