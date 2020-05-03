@@ -29,7 +29,7 @@ const Blog = ({ blog, addLike, removeBlog, username }) => {
       </div>
       <div className="details" style={{ display: hidden ? 'none' : '' }}>
         <div className="url">{ blog.url }</div>
-        <div className="likes">{ blog.likes }<button onClick={like}>like</button></div>
+        <div className="likes">{ blog.likes }<button className="like-button" onClick={like}>like</button></div>
         <div>{ blog.user.name }</div>
         <div style={{ display: username === blog.user.username ? '' : 'none' }}>
           <button onClick={ remove } >remove</button>

@@ -8,24 +8,24 @@ describe('<Blog />', () => {
 
   const addLike = jest.fn()
   const removeBlog = jest.fn()
-  const username = "Firstname Lastname"
+  const username = 'Firstname Lastname'
   const blogObject = {
-    title: "Catchy Blog Yitle",
-    author: "Author Blogman",
-    url: "http://bloggityblogblog.blog/blog",
+    title: 'Catchy Blog Yitle',
+    author: 'Author Blogman',
+    url: 'http://bloggityblogblog.blog/blog',
     user: {
-      name: "Creator Name",
-      username: "xx420BlazeItxx",
-      id: "5ea4d4f292a4f245f498f929"
+      name: 'Creator Name',
+      username: 'xx420BlazeItxx',
+      id: '5ea4d4f292a4f245f498f929'
     }
   }
 
   beforeEach(() => {
     component = render(
       <Blog blog={ blogObject }
-            addLike={ addLike }
-            removeBlog={ removeBlog }
-            username={ username }
+        addLike={ addLike }
+        removeBlog={ removeBlog }
+        username={ username }
       />
     )
   })
@@ -56,17 +56,6 @@ describe('<Blog />', () => {
     fireEvent.click(button)
     fireEvent.click(button)
 
-    const detailsDiv = component.container.querySelector('.details')
-
     expect(addLike.mock.calls).toHaveLength(2)
   })
-
-  // test('after clicking the button, children are displayed', () => {
-  //   const button = component.getByText('show...')
-  //   fireEvent.click(button)
-
-  //   const div = component.container.querySelector('.togglableContent')
-  //   expect(div).not.toHaveStyle('display: none')
-  // })
-
 })

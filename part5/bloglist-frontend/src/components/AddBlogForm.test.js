@@ -15,9 +15,9 @@ describe('<AddBlogForm />', () => {
   })
 
   test('passes correct values to createBlog', () => {
-    const title = "Catchy Blog Yitle"
-    const author = "Author Blogman"
-    const url = "http://bloggityblogblog.blog/blog"
+    const title = 'Catchy Blog Yitle'
+    const author = 'Author Blogman'
+    const url = 'http://bloggityblogblog.blog/blog'
 
     const titleInput = component.container.querySelector('#title')
     fireEvent.change(titleInput, {
@@ -28,7 +28,7 @@ describe('<AddBlogForm />', () => {
     fireEvent.change(authorInput, {
       target: { value: author }
     })
-    
+
     const urlInput = component.container.querySelector('#url')
     fireEvent.change(urlInput, {
       target: { value: url }

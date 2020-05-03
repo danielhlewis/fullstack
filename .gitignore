@@ -28,3 +28,4 @@ scratch/
 .env
 node_modules/
 part5/notes/cypress/videos/
+part5/bloglist-frontend/cypress/videos/

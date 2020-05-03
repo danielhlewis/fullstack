@@ -64,7 +64,7 @@ const App = () => {
     blogService
       .create(blogObject)
       .then( returnedBlog => {
-        setBlogs(blogs.concat(blogObject))
+        setBlogs(blogs.concat(returnedBlog))
         setNotificationMessage(
           `Added ${returnedBlog.title} by  ${returnedBlog.author}`
         )
@@ -128,6 +128,7 @@ const App = () => {
         username
         <input
           type="text"
+          id="username"
           value={username}
           name="Username"
           onChange={({ target }) => setUsername(target.value)}
@@ -137,12 +138,13 @@ const App = () => {
         password
         <input
           type="password"
+          id="password"
           value={password}
           name="Password"
           onChange={({ target }) => setPassword(target.value)}
         />
       </div>
-      <button type="submit">login</button>
+      <button id="login-button" type="submit">login</button>
     </form>
   )
 
