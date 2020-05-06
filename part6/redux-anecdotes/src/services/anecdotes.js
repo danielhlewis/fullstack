@@ -15,8 +15,8 @@ const createNew = async (content) => {
 
 const upvote = async (id) => {
   const oldResponse = await axios.get(`${baseUrl}/${id}`)
-  const object = oldResponse.data
-  const response = await axios.put(`${baseUrl}/${id}`, {...object, votes: object.votes + 1})
+  const oldObject = oldResponse.data
+  const response = await axios.put(`${baseUrl}/${id}`, {...oldObject, votes: oldObject.votes + 1})
   return response.data
 }
 
