@@ -4,11 +4,18 @@ export const setNotification = (content, seconds) => {
       type: 'SET_NOTIFICATION',
       data: content
     })
-    setTimeout(() => {
+    dispatch({
+      type: 'CLEAR_TIMER'
+    })
+    const timer = setTimeout(() => {
       dispatch({
         type: 'CLEAR_NOTIFICATION'
       })
     }, seconds * 1000)
+    dispatch({
+      type: 'SET_TIMER_ID',
+      data: timer
+    })
   }
 }
 
@@ -18,12 +25,23 @@ export const clearNotification = () => {
   }
 }
 
-const notificationReducer = (state = '', action) => {
+const initialState = {
+  message: '',
+  timer: null
+}
+
+const notificationReducer = (state = initialState, action) => {
   switch(action.type) {
     case 'SET_NOTIFICATION':
-      return action.data
+      return {...state, message: action.data }
     case 'CLEAR_NOTIFICATION':
-      return ''
+      return initialState
+    case 'CLEAR_TIMER':
+      if (state.timer !== null)
+        clearTimeout(state.timer)
+      return {...state, timer: null }
+    case 'SET_TIMER_ID':
+      return {...state, timer: action.data }
     default:
       return state
   }
