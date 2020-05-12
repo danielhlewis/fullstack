@@ -1,5 +1,5 @@
 import blogService from '../services/blogs'
-import { setNotification } from './notificationReducer'
+import { setSuccess, setError } from './notificationReducer'
 
 const blogReducer = (state = [], action) => {
   switch(action.type) {
@@ -33,10 +33,10 @@ export const createBlog = (title, author, url) => {
         type: 'NEW_BLOG',
         data: newBlog,
       })
-      dispatch(setNotification("Added Blog", 5))
+      dispatch(setSuccess("Added Blog", 5))
     } catch (exception) {
       console.log(exception.response)
-      dispatch(setNotification(exception.response.data.error, 5))
+      dispatch(setError(exception.response.data.error, 5))
     }
   }
 }
@@ -50,10 +50,10 @@ export const addLike = (blogObject) => {
         type: 'UPDATE_BLOG',
         data: newBlog,
       })
-      dispatch(setNotification(`Liked ${newBlog.title}`, 5))
+      dispatch(setSuccess(`Liked ${newBlog.title}`, 5))
     } catch (exception) {
       console.log(exception.response)
-      dispatch(setNotification(exception.response.data.error, 5))
+      dispatch(setError(exception.response.data.error, 5))
     }
   }
 }
@@ -69,10 +69,10 @@ export const addComment = (blog, comment) => {
         type: 'UPDATE_BLOG',
         data: newBlog,
       })
-      dispatch(setNotification(`Added Comment: ${comment}`, 5))
+      dispatch(setSuccess(`Added Comment: ${comment}`, 5))
     } catch (exception) {
       console.log(exception.response)
-      dispatch(setNotification(exception.response.data.error, 5))
+      dispatch(setError(exception.response.data.error, 5))
     }
   }
 }
@@ -85,10 +85,10 @@ export const removeBlog = (blogObject) => {
         type: 'REMOVE_BLOG',
         data: blogObject.id,
       })
-      dispatch(setNotification(`Removed ${blogObject.title}`, 5))
+      dispatch(setSuccess(`Removed ${blogObject.title}`, 5))
     } catch (exception) {
       console.log(exception.response)
-      dispatch(setNotification(exception.response.data.error, 5))
+      dispatch(setError(exception.response.data.error, 5))
     }
   }
 }

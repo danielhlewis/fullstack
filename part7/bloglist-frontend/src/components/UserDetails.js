@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import {
-  Switch, Route, Link, Redirect, useRouteMatch
+  Link, useRouteMatch
 } from 'react-router-dom'
 import userService from '../services/users'
 
@@ -15,7 +15,7 @@ const UserDetails = () => {
       console.log(match.params.id)
       userService.get(match.params.id).then(user => setUser(user))
     }
-  }, [])
+  }, [match])
 
   if (user === null) {
     return <div />

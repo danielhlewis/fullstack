@@ -1,24 +1,31 @@
-import React, {useEffect} from 'react'
+import React from 'react'
+import { useSelector } from 'react-redux'
+import Container from '@material-ui/core/Container'
 
 import Notification from './components/Notification'
 import UserForm from './components/UserForm'
 import NavBar from './components/NavBar'
 import PageSwitch from './components/PageSwitch'
 
-import { useSelector } from 'react-redux'
+
 
 const App = () => {
   const user = useSelector(state => state.login)
 
   if (user === null) {
-    return <UserForm />
+    return (
+      <Container>
+        <Notification />
+        <UserForm />
+      </Container>
+    )
   }
   return (
-    <div>
+    <Container>
       <NavBar />
       <Notification />
       <PageSwitch />
-    </div>
+    </Container>
   )
 }
 

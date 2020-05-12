@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link, Redirect, useRouteMatch } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { useRouteMatch } from 'react-router-dom'
 import blogService from '../services/blogs'
 import { addLike, addComment } from '../reducers/blogReducer'
 import { useField } from '../hooks'
@@ -10,7 +10,6 @@ const BlogDetails = () => {
   const newComment = useField('text')
 
   const dispatch = useDispatch()
-  const user = useSelector(state => state.login)
 
   const match = useRouteMatch('/blogs/:id')
 
@@ -18,7 +17,7 @@ const BlogDetails = () => {
     if (match) {
       blogService.get(match.params.id).then(blog => setBlog(blog))
     }
-  }, [])
+  }, [match])
 
   const handleLike = () => {
     dispatch(addLike(blog))

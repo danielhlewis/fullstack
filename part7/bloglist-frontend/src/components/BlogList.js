@@ -3,6 +3,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import { initializeBlogs } from '../reducers/blogReducer'
 import blogService from '../services/blogs'
 import Blog from './Blog'
+import {
+  Table,
+  TableBody,
+  TableContainer,
+  Paper,
+} from '@material-ui/core'
 
 const BlogList = () => {
   const dispatch = useDispatch()
@@ -13,15 +19,19 @@ const BlogList = () => {
     blogService.getAll().then(blogs =>
       dispatch(initializeBlogs( blogs ))
     )
-  }, [])
+  }, [dispatch])
 
   if (user === null) {
     return <div></div>
   }
   return (
-    <div>
-      {blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
-    </div>
+    <TableContainer component={Paper}>
+      <Table>
+        <TableBody>
+          {blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
+        </TableBody>
+      </Table>
+    </TableContainer>
   )
 }
 

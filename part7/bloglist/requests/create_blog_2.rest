@@ -1,0 +1,9 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRhbiIsImlkIjoiNWVhNGQ0ZjI5MmE0ZjI0NWY0OThmOTI5IiwiaWF0IjoxNTg3ODYzNzYyfQ.B6kFOcxM0ruf-pcI3x7ZuN_IEqmjJ_Is79jUosvLaCU
+
+{
+  "title": "this also a blog title",
+  "author": "John Writer",
+  "url": "http://www.goodblogman.com/2"
+}

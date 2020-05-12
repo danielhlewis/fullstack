@@ -1,7 +1,8 @@
 import React, { useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { createLogin, createLogout, setLoggedInUser } from '../reducers/loginReducer'
+import { createLogin, setLoggedInUser } from '../reducers/loginReducer'
 import { useField } from '../hooks'
+import { TextField, Button } from '@material-ui/core'
 
 const UserForm = () => {
   const dispatch = useDispatch();
@@ -12,7 +13,7 @@ const UserForm = () => {
       const user = JSON.parse(loggedUserJSON)
       dispatch(setLoggedInUser(user))
     }
-  }, [])
+  }, [dispatch])
 
   const user = useSelector(state => state.login)
   // console.log(user)
@@ -27,17 +28,17 @@ const UserForm = () => {
   if (user == null) {
     return (
       <div>
-        <h2>Log in to application</h2>
+        <h2>login</h2>
         <form onSubmit={handleLogin}>
           <div>
-            username
-            <input {...username.fields()} />
+            <TextField label='username' {...username.fields()} />
           </div>
           <div>
-            password
-            <input {...password.fields()} />
+            <TextField label='password' type='password' {...password.fields()} />
           </div>
-          <button id="login-button" type="submit">login</button>
+          <Button variant='contained' color='primary' id="login-button" type="submit">
+            login
+          </Button>
         </form>
       </div>
     )

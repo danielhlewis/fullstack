@@ -1,5 +1,5 @@
 import loginService from '../services/login'
-import setNotification from './notificationReducer'
+import { setSuccess, setError } from './notificationReducer'
 import { setToken } from '../services/blogs'
 
 const loginReducer = (state = null, action) => {
@@ -28,8 +28,9 @@ export const createLogin = (username, password) => {
         type: 'LOGIN',
         data: user,
       })
+      dispatch(setSuccess(`Welcome, ${user.name}!`, 5))
     } catch (exception) {
-      dispatch(setNotification('Wrong credentials', 5))
+      dispatch(setError('Wrong credentials', 5))
     }
   }
 }
