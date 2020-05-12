@@ -22,6 +22,24 @@ blogsRouter.get('/:id', async (request, response) => {
   }
 })
 
+blogsRouter.post('/:id/comments', async (request, response) => {
+  const comment = request.body.comment
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token missing or invalid' })
+  }
+
+  const blog = await Blog.findById(request.params.id)
+  console.log(blog)
+
+  const comments = {
+    comments: [...blog.comments, comment]
+  }
+
+  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, comments, { new: true }).populate('user', { username: 1, name: 1 })
+  response.json(updatedBlog.toJSON())
+})
+
 blogsRouter.post('/', async (request, response) => {
   const body = request.body
   const decodedToken = jwt.verify(request.token, process.env.SECRET)
