@@ -113,7 +113,7 @@ const resolvers = {
     findPerson: (root, args) => Person.findOne({ name: args.name }),
     me: (root, args, context) => {
       return context.currentUser
-    }  
+    }
   },
   Person: {
     address: (root) => {
