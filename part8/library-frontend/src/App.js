@@ -5,7 +5,10 @@ import Books from './components/Books'
 import NewBook from './components/NewBook'
 import LoginForm from './components/LoginForm'
 import Recommended from './components/Recommended'
-import { useApolloClient } from '@apollo/client'
+import {
+  useQuery, useMutation, useSubscription, useApolloClient
+} from '@apollo/client'
+import { BOOK_ADDED, AUTHOR_ADDED, ALL_AUTHORS, ALL_BOOKS } from './queries'
 
 const App = () => {
   const [token, setToken] = useState(null)
@@ -19,6 +22,71 @@ const App = () => {
       setToken(savedToken)
     }
   }, [])
+
+  const includedIn = (set, object) => 
+      set.map(p => p.id).includes(object.id)
+
+  const updateAuthorCacheWith = (addedAuthor) => {
+    console.log("updating author cache")
+    const dataInStore = client.readQuery({ query: ALL_AUTHORS })
+    if (!includedIn(dataInStore.allAuthors, addedAuthor)) {
+      const authorforCache = {...addedAuthor, bookCount: 1}
+      client.writeQuery({
+        query: ALL_AUTHORS,
+        data: {
+          ...dataInStore,
+          allAuthors: [ ...dataInStore.allAuthors, authorforCache ]
+        }
+      })
+    }
+  }
+
+  const updateBookCacheWith = (addedBook) => {
+    const dataInStore = client.readQuery({ query: ALL_BOOKS })
+    if (!includedIn(dataInStore.allBooks, addedBook)) {
+      client.writeQuery({
+        query: ALL_BOOKS,
+        data: {
+          ...dataInStore,
+          allBooks: [ ...dataInStore.allBooks, addedBook ]
+        }
+      })
+    }
+    const genres = addedBook.genres
+      genres.map(genre => {
+        try {
+          const dataInStore = client.readQuery({ query: ALL_BOOKS, variables: {genre: genre} })
+          if (!includedIn(dataInStore.allBooks, addedBook)) {
+            client.writeQuery({
+              query: ALL_BOOKS,
+              variables: {genre: genre},
+              data: {
+                ...dataInStore,
+                allBooks: [ ...dataInStore.allBooks, addedBook ]
+              }
+            })
+          }
+        } catch (exception) {
+
+        }
+      })
+  }
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      const addedBook = subscriptionData.data.bookAdded
+      notify(`${addedBook.title} added`)
+      updateBookCacheWith(addedBook)
+    }
+  })
+
+  useSubscription(AUTHOR_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      const addedAuthor = subscriptionData.data.authorAdded
+      notify(`${addedAuthor.name} added`)
+      updateAuthorCacheWith(addedAuthor)
+    }
+  })
 
   const notify = (message) => {
     setErrorMessage(message)
@@ -65,6 +133,8 @@ const App = () => {
 
       <NewBook
         show={page === 'add'}
+        updateBookCacheWith={updateBookCacheWith}
+        updateAuthorCacheWith={updateAuthorCacheWith}
       />
 
       <Recommended

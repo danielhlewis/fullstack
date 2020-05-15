@@ -74,3 +74,27 @@ query {
   }
 }
 `
+
+export const AUTHOR_ADDED = gql`
+subscription {
+  authorAdded{
+    id
+    name
+    born
+  }
+}
+`
+
+export const BOOK_ADDED = gql`
+subscription {
+  bookAdded{
+    title
+    author {
+      name
+    }
+    published
+    genres
+    id
+  }
+}
+`
