@@ -120,6 +120,7 @@ const typeDefs = gql`
   type Author {
     name: String!
     born: Int
+    books: [Book]
     bookCount: Int!
     id: ID!
   }
@@ -136,6 +137,7 @@ const typeDefs = gql`
     authorCount: Int!
     allBooks(author: String, genre: String): [Book!]!
     allAuthors: [Author!]!
+    oneAuthor(author: String!): Author!
     me: User
   }
   type Mutation {
@@ -161,11 +163,16 @@ const typeDefs = gql`
   type Subscription {
     bookAdded: Book!
     authorAdded: Author!
+    bookAddedToAuthor: Author!
   }
 `
 
 const resolvers = {
   Query: {
+    oneAuthor: (root, args) => {
+      console.log(args)
+      return Author.findOne({name: args.author}).populate('books')
+    },
     authorCount: () => Author.collection.countDocuments(),
     bookCount: () => Book.collection.countDocuments(),
     allBooks: async (root, args) => {
@@ -186,9 +193,8 @@ const resolvers = {
     }
   },
   Author: {
-    bookCount: async (root) => {
-      console.log(root)
-      return await Book.countDocuments({author: root})
+    bookCount: (root) => {
+      return root.books.length
     }
   },
   Mutation: {
@@ -203,13 +209,18 @@ const resolvers = {
       let author = await Author.findOne({ name: args.author })
       try {
         if (!author) {
-          author = new Author({name: args.author})
+          author = new Author({name: args.author, books: []})
           author = await author.save()
           pubsub.publish('AUTHOR_ADDED', { authorAdded: author })
         }
         const book = new Book({...args, author: author})
         await book.save()
         pubsub.publish('BOOK_ADDED', { bookAdded: book })
+        if (author.books)
+          author.books = [...author.books, book]
+        else
+          author.books = [book]
+        await author.save()
         return book
       } catch (error) {
         throw new UserInputError(error.message, {

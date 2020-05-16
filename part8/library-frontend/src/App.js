@@ -6,22 +6,29 @@ import NewBook from './components/NewBook'
 import LoginForm from './components/LoginForm'
 import Recommended from './components/Recommended'
 import {
-  useQuery, useMutation, useSubscription, useApolloClient
+  useQuery, useLazyQuery, useMutation, useSubscription, useApolloClient
 } from '@apollo/client'
-import { BOOK_ADDED, AUTHOR_ADDED, ALL_AUTHORS, ALL_BOOKS } from './queries'
+import { BOOK_ADDED, AUTHOR_ADDED, ALL_AUTHORS, ALL_BOOKS, FAVORITE_GENRE } from './queries'
 
 const App = () => {
   const [token, setToken] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [page, setPage] = useState('authors')
   const client = useApolloClient()
-
+  const [getGenre, genreResult] = useLazyQuery(FAVORITE_GENRE)
+  
   useEffect(() => {
     const savedToken = window.localStorage.getItem('library-user-token')
     if (savedToken) {
       setToken(savedToken)
+      getGenre()
     }
   }, [])
+
+  const login = (token) => {
+    setToken(token)
+    getGenre()
+  }
 
   const includedIn = (set, object) => 
       set.map(p => p.id).includes(object.id)
@@ -99,6 +106,7 @@ const App = () => {
     setToken(null)
     localStorage.clear()
     client.resetStore()
+    setPage('authors')
   }
 
   if (token && page === 'login') {
@@ -125,6 +133,7 @@ const App = () => {
 
       <Authors
         show={page === 'authors'}
+        showSetBirthyear={token}
       />
 
       <Books
@@ -139,11 +148,12 @@ const App = () => {
 
       <Recommended
         show={page === 'recommended'}
+        genreResult={genreResult}
       />
 
       <LoginForm
         show={page === 'login'}
-        setToken={setToken}
+        setToken={login}
         setError={notify}
       />
 

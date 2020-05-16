@@ -3,16 +3,15 @@ import { useQuery, useLazyQuery } from '@apollo/client'
 import { ALL_BOOKS, FAVORITE_GENRE } from '../queries'
 
 
-const Recommended = (props) => {
+const Recommended = ({genreResult, show}) => {
   const [genre, setGenre] = useState(null)
   const [books, setBooks] = useState([])
   const [getBooks, booksResult] = useLazyQuery(ALL_BOOKS)
-  const genreResult = useQuery(FAVORITE_GENRE)
 
   useEffect(() => {
     console.log('useEffect: genre')
     console.log(genreResult)
-    if (genreResult.data) {
+    if (!genreResult.loading && genreResult.data && genreResult.data.me) {
       const favGenre = genreResult.data.me.favoriteGenre
       console.log('favGenre')
       console.log(favGenre)
@@ -34,7 +33,7 @@ const Recommended = (props) => {
     }
   }, [booksResult])
 
-  if (!props.show) {
+  if (!show) {
     return null
   }
 
