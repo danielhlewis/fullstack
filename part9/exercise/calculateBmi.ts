@@ -3,30 +3,30 @@ interface BMIValues {
   height: number;
 }
 
-const parseBmiArguments = (args: Array<string>): BMIValues => {
-  if (args.length < 4) throw new Error('Not enough arguments');
-  if (args.length > 4) throw new Error('Too many arguments');
+// const parseBmiArguments = (args: Array<string>): BMIValues => {
+//   if (args.length < 4) throw new Error('Not enough arguments');
+//   if (args.length > 4) throw new Error('Too many arguments');
 
-  if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
-    return {
-      weight: Number(args[2]),
-      height: Number(args[3])
-    }
-  } else {
-    throw new Error('Provided values were not numbers!');
-  }
-}
+//   if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
+//     return {
+//       weight: Number(args[2]),
+//       height: Number(args[3])
+//     };
+//   } else {
+//     throw new Error('Provided values were not numbers!');
+//   }
+// };
 
 const strings2BMIValues = (heightString: string, weightString: string): BMIValues => {
   if (!isNaN(Number(heightString)) && !isNaN(Number(weightString))) {
     return {
       weight: Number(weightString),
       height: Number(heightString)
-    }
+    };
   } else {
     throw new Error('Provided values were not numbers!');
   }
-}
+};
 
 const calculateBmi = (bmiValues: BMIValues): string => {
   // lbs & inches
@@ -50,7 +50,7 @@ const calculateBmi = (bmiValues: BMIValues): string => {
   } else {
     return 'Obese Class III (Very severely obese)';
   }
-}
+};
 
 // try {
 //   console.log(calculateBmi(parseBmiArguments(process.argv)));
@@ -60,4 +60,4 @@ const calculateBmi = (bmiValues: BMIValues): string => {
 
 export const bmi = (height: string, weight: string): string => {
   return calculateBmi(strings2BMIValues(weight, height));
-}
+};
