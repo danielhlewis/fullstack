@@ -56,7 +56,7 @@ const parseSickLeave = (sickLeave: any): SickLeave => {
 }
 
 const parseHealthCheckRating = (rating: any): HealthCheckRating => {
-  if (!rating || !isHealthCheckRating(rating)) {
+  if (rating === null || !isHealthCheckRating(rating)) {
       throw new Error('Incorrect or missing HealthCheckRating: ' + rating);
   } 
   return rating;
@@ -67,7 +67,7 @@ const isHealthCheckRating = (param: any): param is HealthCheckRating => {
 };
 
 const parseStringArray = (s: any, name: string): Array<string> => {
-  if (!s || !Array.isArray(s) || s.reduce((allStrings, cur) => !isString(cur) ? false : allStrings, true)) {
+  if (!s || !Array.isArray(s) || !s.reduce((allStrings, cur) => !isString(cur) ? false : allStrings, true)) {
     throw new Error(`Incorrect or missing ${name}: ${s}`);
   }
   return s;
